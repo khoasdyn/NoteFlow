@@ -12,6 +12,9 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query var notes: [Note]
     
+    @State var selectedNote: Note?
+    @State var editMode: Bool = false
+    
     let columns = [GridItem(.adaptive(minimum: 200), spacing: 16)]
     
     var body: some View {
@@ -33,10 +36,14 @@ struct ContentView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(.red)
             }
-
+            
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(notes, id: \.id) { note in
                     CardView(note: note)
+                        .onTapGesture {
+                            selectedNote = note
+                            editMode = true
+                        }
                 }
             }
             .padding(16)
@@ -44,6 +51,18 @@ struct ContentView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white)
+        .overlay {
+            if editMode, let selected = selectedNote {
+                ZStack {
+                    Rectangle()
+                        .fill(.black.opacity(0.4))
+                        .ignoresSafeArea()
+                    
+                    CardView(note: selected)
+                        .frame(maxWidth: 500, maxHeight: 400)
+                }
+            }
+        }
     }
     
     func addSampledNotes() {
@@ -87,18 +106,18 @@ struct CardView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(note.title)
                 .font(.system(size: 24, weight: .medium))
-                .foregroundColor(.yellow900)
+                .foregroundColor(Color(red: 0.45, green: 0.33, blue: 0.04))
                 .lineLimit(3)
             Text(note.content)
                 .font(.system(size: 16, weight: .regular))
-                .foregroundColor(.grayWarm500)
+                .foregroundColor(.gray)
                 .lineLimit(4)
             Spacer()
         }
         .padding()
         .frame(minHeight: 200)
         .frame(maxWidth: .infinity)
-        .background(.yellow100)
+        .background(Color(red: 1.0, green: 0.98, blue: 0.88))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
