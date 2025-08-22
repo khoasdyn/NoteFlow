@@ -25,7 +25,7 @@ struct CardView: View {
         .padding(18)
         .frame(minHeight: 200)
         .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(.grayWarm50)
+        .background(.grayWarm100)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
