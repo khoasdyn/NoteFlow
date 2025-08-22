@@ -16,11 +16,24 @@ struct ContentView: View {
     
     var body: some View {
         ScrollView(.vertical) {
-            Button("Add Sample") {
-                addSampledNotes()
+            HStack {
+                Button("Add Sample") {
+                    addSampledNotes()
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Button("Add new Note") {
+                    modelContext.insert(Note(title: "A wonderful new card"))
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Button("Delete All") {
+                    deleteAllNotes()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
             }
-            .buttonStyle(.borderedProminent)
-            
+
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(notes, id: \.id) { note in
                     CardView(note: note)
@@ -57,6 +70,13 @@ struct ContentView: View {
         for title in titles {
             modelContext.insert(Note(title: title))
         }
+    }
+    
+    func deleteAllNotes() {
+        for note in notes {
+            modelContext.delete(note)
+        }
+        try? modelContext.save()
     }
 }
 
