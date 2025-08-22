@@ -9,41 +9,56 @@ import SwiftUI
 import SwiftData
 
 struct DetailView: View {
-    @Bindable var note: Note
-    @Binding var editMode: Bool
+    let noteID: String
+    @Binding var selectedNoteID: String?
+    @Environment(\.modelContext) private var modelContext
+    @Query private var notes: [Note]
+    
+    var note: Note? {
+        notes.first { $0.id == noteID }
+    }
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Overlay
-                Rectangle()
-                    .fill(.black.opacity(0.4))
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        editMode = false
-                    }
-
-                // Card View
-                VStack(alignment: .leading, spacing: 16) {
-                    TextField("Title", text: $note.title, axis: .vertical)
-                        .font(.system(size: 28, weight: .medium))
-                        .foregroundColor(.primary)
-                        .textFieldStyle(.plain)
-                        .lineLimit(1...10)
-                        .multilineTextAlignment(.leading)
-                    
-                    TextEditor(text: $note.content)
-                        .font(.system(size: 18, weight: .regular))
-                        .foregroundColor(.primary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                }
-                .padding(32)
-                .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.8)
-                .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .contentShape(Rectangle())
-                .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        if let note = note {
+            VStack(alignment: .leading, spacing: 16) {
+                TextField("Title", text: Binding(
+                    get: { note.title },
+                    set: { note.title = $0 }
+                ), axis: .vertical)
+                    .font(.system(size: 28, weight: .medium))
+                    .foregroundColor(.primary)
+                    .textFieldStyle(.plain)
+                    .lineLimit(1...10)
+                    .multilineTextAlignment(.leading)
+                
+                TextEditor(text: Binding(
+                    get: { note.content },
+                    set: { note.content = $0 }
+                ))
+                    .font(.system(size: 18, weight: .regular))
+                    .foregroundColor(.primary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .scrollContentBackground(.hidden)
             }
+            .padding(32)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(.white)
+            .navigationTitle(note.title)
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Button {
+                        modelContext.delete(note)
+                        try? modelContext.save()
+                        selectedNoteID = nil
+                    } label: {
+                        Label("Delete Note", systemImage: "trash")
+                    }
+                    .tint(.red)
+                }
+            }
+        } else {
+            Text("Note not found")
+                .foregroundColor(.secondary)
         }
     }
 }

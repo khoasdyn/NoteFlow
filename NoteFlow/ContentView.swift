@@ -12,8 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query var notes: [Note]
     
-    @State var selectedNote: Note?
-    @State var editMode: Bool = false
+    @State private var selectedNoteID: String?
     
     let columns = [GridItem(.adaptive(minimum: 200), spacing: 16)]
     
@@ -23,62 +22,56 @@ struct ContentView: View {
                 Label("All Cards", systemImage: "square.stack")
             }
         } detail: {
-            ScrollView(.vertical) {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(notes, id: \.id) { note in
-                        CardView(note: note)
-                            .onTapGesture {
-                                selectedNote = note
-                                editMode = true
-                            }
+            if let noteID = selectedNoteID {
+                DetailView(noteID: noteID, selectedNoteID: $selectedNoteID)
+            } else {
+                ScrollView(.vertical) {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(notes, id: \.id) { note in
+                            CardView(note: note)
+                                .onTapGesture {
+                                    selectedNoteID = note.id
+                                }
+                        }
                     }
+                    .padding(16)
                 }
-                .padding(16)
-            }
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.white)
-            .overlay {
-                if editMode, let selected = selectedNote {
-                    DetailView(note: selected, editMode: $editMode)
-                }
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
             }
         }
         .toolbar {
-            ToolbarItemGroup {
-                Group {
-                    if editMode, let selected = selectedNote {
-                        Button("Delete Note") {
-                            modelContext.delete(selected)
-                            try? modelContext.save()
-                            editMode = false
-                            selectedNote = nil
-                        }
-                        .tint(.red)
-                    } else {
-                        Button {
-                            addSampledNotes()
-                        } label: {
-                            Image(systemName: "wand.and.sparkles.inverse")
-                        }
-                        
-                        Button {
-                            modelContext.insert(Note(title: "A wonderful new card"))
-                        } label: {
-                            Image(systemName: "plus.square")
-                        }
-                        
-                        Button {
-                            deleteAllNotes()
-                        } label: {
-                            Image(systemName: "trash")
-                        }
-                        .tint(.red)
+            ToolbarItemGroup(placement: .navigation) {
+                if selectedNoteID != nil {
+                    Button {
+                        selectedNoteID = nil
+                    } label: {
+                        Label("Back", systemImage: "chevron.left")
                     }
-                    
                 }
             }
             
+            ToolbarItemGroup {
+                Button {
+                    addSampledNotes()
+                } label: {
+                    Image(systemName: "wand.and.sparkles.inverse")
+                }
+                
+                Button {
+                    modelContext.insert(Note(title: "A wonderful new card"))
+                } label: {
+                    Image(systemName: "plus.square")
+                }
+                
+                Button {
+                    deleteAllNotes()
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .tint(.red)
+            }
         }
     }
     
