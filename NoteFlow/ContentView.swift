@@ -18,42 +18,52 @@ struct ContentView: View {
     let columns = [GridItem(.adaptive(minimum: 200), spacing: 16)]
     
     var body: some View {
-        ScrollView(.vertical) {
-            HStack {
-                Button("Add Sample") {
-                    addSampledNotes()
-                }
-                .buttonStyle(.borderedProminent)
-                
-                Button("Add new Note") {
-                    modelContext.insert(Note(title: "A wonderful new card"))
-                }
-                .buttonStyle(.borderedProminent)
-                
-                Button("Delete All") {
-                    deleteAllNotes()
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.red)
+        NavigationSplitView {
+            List {
+                Label("All Cards", systemImage: "square.stack")
             }
-            
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(notes, id: \.id) { note in
-                    CardView(note: note)
-                        .onTapGesture {
-                            selectedNote = note
-                            editMode = true
+        } detail: {
+            ScrollView(.vertical) {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(notes, id: \.id) { note in
+                        CardView(note: note)
+                            .onTapGesture {
+                                selectedNote = note
+                                editMode = true
+                            }
+                    }
+                }
+                .padding(16)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.white)
+            .overlay {
+                if editMode, let selected = selectedNote {
+                    DetailView(note: selected, editMode: $editMode)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup {
+                    if editMode, let selected = selectedNote {
+                        Button("Delete") {
+                            modelContext.delete(selected)
+                            try? modelContext.save()
+                            editMode = false
+                            selectedNote = nil
                         }
+                    } else {
+                        Button("Add Sample") {
+                            addSampledNotes()
+                        }
+                        Button("Add new Note") {
+                            modelContext.insert(Note(title: "A wonderful new card"))
+                        }
+                        Button("Delete All") {
+                            deleteAllNotes()
+                        }
+                    }
                 }
-            }
-            .padding(16)
-        }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.white)
-        .overlay {
-            if editMode, let selected = selectedNote {
-                DetailView(note: selected, editMode: $editMode)
             }
         }
     }
