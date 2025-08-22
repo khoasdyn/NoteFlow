@@ -9,28 +9,25 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query var notes: [Note]
-    
-    @State private var selectedNoteID: String?
-    
-    let columns = [GridItem(.adaptive(minimum: 200), spacing: 16)]
-    
+    @Environment(\.modelContext) private var modelContext
+    @State private var selectedNote: Note?
+        
     var body: some View {
         NavigationSplitView {
             List {
                 Label("All Cards", systemImage: "square.stack")
             }
         } detail: {
-            if let noteID = selectedNoteID {
-                DetailView(noteID: noteID, selectedNoteID: $selectedNoteID)
+            if let note = selectedNote {
+                DetailView(note: note)
             } else {
                 ScrollView(.vertical) {
-                    LazyVGrid(columns: columns, spacing: 16) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
                         ForEach(notes, id: \.id) { note in
                             CardView(note: note)
                                 .onTapGesture {
-                                    selectedNoteID = note.id
+                                    selectedNote = note
                                 }
                         }
                     }
@@ -43,9 +40,9 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
-                if selectedNoteID != nil {
+                if selectedNote != nil {
                     Button {
-                        selectedNoteID = nil
+                        selectedNote = nil
                     } label: {
                         Label("Back", systemImage: "chevron.left")
                     }
