@@ -25,28 +25,24 @@ struct DetailView: View {
 
                 // Card View
                 VStack(alignment: .leading, spacing: 16) {
-                    TextField("Title", text: $note.title)
-                        .font(.system(size: 24, weight: .medium))
+                    TextField("Title", text: $note.title, axis: .vertical)
+                        .font(.system(size: 28, weight: .medium))
                         .foregroundColor(.primary)
                         .textFieldStyle(.plain)
+                        .lineLimit(1...10)
+                        .multilineTextAlignment(.leading)
                     
                     TextEditor(text: $note.content)
-                        .font(.system(size: 16, weight: .regular))
+                        .font(.system(size: 18, weight: .regular))
                         .foregroundColor(.primary)
-                        .scrollContentBackground(.hidden)
-                        .background(Color.clear)
-                    
-                    Spacer()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
-                .padding(40)
-                .frame(maxWidth: .infinity)
-                .background(Color(white: 0.97))
+                .padding(32)
+                .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.8)
+                .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.5)
+                .contentShape(Rectangle())
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                .onTapGesture {
-                    // Prevent closing when tapping the card itself
-                }
             }
         }
     }

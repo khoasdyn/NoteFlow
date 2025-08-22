@@ -17,9 +17,9 @@ struct CardView: View {
                 .foregroundColor(.grayWarm800)
                 .lineLimit(3)
             Text(note.content)
-                .font(.system(size: 16, weight: .regular))
+                .font(.system(size: 14, weight: .regular))
                 .foregroundColor(.grayWarm700)
-                .lineLimit(4)
+                .lineLimit(5)
             Spacer()
         }
         .padding(18)
