@@ -14,6 +14,7 @@ struct NoteFlowApp: App {
         WindowGroup {
             ContentView()
                 .modelContainer(for: Note.self)
+                .preferredColorScheme(.light)
         }
     }
 }

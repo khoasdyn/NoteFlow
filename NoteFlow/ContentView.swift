@@ -43,28 +43,42 @@ struct ContentView: View {
                     DetailView(note: selected, editMode: $editMode)
                 }
             }
-            .toolbar {
-                ToolbarItemGroup {
+        }
+        .toolbar {
+            ToolbarItemGroup {
+                Group {
                     if editMode, let selected = selectedNote {
-                        Button("Delete") {
+                        Button("Delete Note") {
                             modelContext.delete(selected)
                             try? modelContext.save()
                             editMode = false
                             selectedNote = nil
                         }
+                        .tint(.red)
                     } else {
-                        Button("Add Sample") {
+                        Button {
                             addSampledNotes()
+                        } label: {
+                            Image(systemName: "wand.and.sparkles.inverse")
                         }
-                        Button("Add new Note") {
+                        
+                        Button {
                             modelContext.insert(Note(title: "A wonderful new card"))
+                        } label: {
+                            Image(systemName: "plus.square")
                         }
-                        Button("Delete All") {
+                        
+                        Button {
                             deleteAllNotes()
+                        } label: {
+                            Image(systemName: "trash")
                         }
+                        .tint(.red)
                     }
+                    
                 }
             }
+            
         }
     }
     
