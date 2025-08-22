@@ -53,14 +53,7 @@ struct ContentView: View {
         .background(Color.white)
         .overlay {
             if editMode, let selected = selectedNote {
-                ZStack {
-                    Rectangle()
-                        .fill(.black.opacity(0.4))
-                        .ignoresSafeArea()
-                    
-                    CardView(note: selected)
-                        .frame(maxWidth: 500, maxHeight: 400)
-                }
+                DetailView(note: selected)
             }
         }
     }
@@ -96,29 +89,6 @@ struct ContentView: View {
             modelContext.delete(note)
         }
         try? modelContext.save()
-    }
-}
-
-struct CardView: View {
-    let note: Note
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(note.title)
-                .font(.system(size: 24, weight: .medium))
-                .foregroundColor(Color(red: 0.45, green: 0.33, blue: 0.04))
-                .lineLimit(3)
-            Text(note.content)
-                .font(.system(size: 16, weight: .regular))
-                .foregroundColor(.gray)
-                .lineLimit(4)
-            Spacer()
-        }
-        .padding()
-        .frame(minHeight: 200)
-        .frame(maxWidth: .infinity)
-        .background(Color(red: 1.0, green: 0.98, blue: 0.88))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
