@@ -53,7 +53,7 @@ struct ContentView: View {
         .background(Color.white)
         .overlay {
             if editMode, let selected = selectedNote {
-                DetailView(note: selected)
+                DetailView(note: selected, editMode: $editMode)
             }
         }
     }

@@ -14,18 +14,18 @@ struct CardView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(note.title)
                 .font(.system(size: 24, weight: .medium))
-                .foregroundColor(Color(red: 0.45, green: 0.33, blue: 0.04))
+                .foregroundColor(.grayWarm800)
                 .lineLimit(3)
             Text(note.content)
                 .font(.system(size: 16, weight: .regular))
-                .foregroundColor(.gray)
+                .foregroundColor(.grayWarm700)
                 .lineLimit(4)
             Spacer()
         }
-        .padding()
+        .padding(18)
         .frame(minHeight: 200)
         .frame(maxWidth: .infinity)
-        .background(Color(red: 1.0, green: 0.98, blue: 0.88))
+        .background(.grayWarm50)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
