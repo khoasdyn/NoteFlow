@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DetailView: View {
-    let note: Note
+    @Bindable var note: Note
     @Binding var editMode: Bool
     
     var body: some View {
@@ -23,18 +24,23 @@ struct DetailView: View {
                     }
 
                 // Card View
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(note.title)
+                VStack(alignment: .leading, spacing: 16) {
+                    TextField("Title", text: $note.title)
                         .font(.system(size: 24, weight: .medium))
-                        .foregroundColor(.grayWarm800)
-                    Text(note.content)
+                        .foregroundColor(.primary)
+                        .textFieldStyle(.plain)
+                    
+                    TextEditor(text: $note.content)
                         .font(.system(size: 16, weight: .regular))
-                        .foregroundColor(.grayWarm700)
+                        .foregroundColor(.primary)
+                        .scrollContentBackground(.hidden)
+                        .background(Color.clear)
+                    
                     Spacer()
                 }
                 .padding(40)
                 .frame(maxWidth: .infinity)
-                .background(.grayWarm50)
+                .background(Color(white: 0.97))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.5)
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
