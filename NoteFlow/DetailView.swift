@@ -36,14 +36,5 @@ struct DetailView: View {
         .padding(32)
         .frame(maxWidth: 800, maxHeight: .infinity)
         .navigationTitle(note.title)
-        .toolbar {
-            ToolbarItem(placement: .destructiveAction) {
-                Button {
-                   
-                } label: {
-                    Label("Share", systemImage: "square.and.arrow.up")
-                }
-            }
-        }
     }
 }

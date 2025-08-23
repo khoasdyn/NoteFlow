@@ -13,6 +13,50 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var selectedNote: Note?
         
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        if selectedNote != nil {
+            // DetailView toolbar items
+            ToolbarItemGroup(placement: .navigation) {
+                Button {
+                    selectedNote = nil
+                } label: {
+                    Label("Back", systemImage: "chevron.left")
+                }
+            }
+            
+            ToolbarItemGroup(placement: .primaryAction) {
+                Button {
+                    // Share action
+                } label: {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+            }
+        } else {
+            // Grid view toolbar items
+            ToolbarItemGroup {
+                Button {
+                    addSampledNotes()
+                } label: {
+                    Image(systemName: "wand.and.sparkles.inverse")
+                }
+                
+                Button {
+                    modelContext.insert(Note(title: "A wonderful new card"))
+                } label: {
+                    Image(systemName: "plus.square")
+                }
+                
+                Button {
+                    deleteAllNotes()
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .tint(.red)
+            }
+        }
+    }
+    
     var body: some View {
         NavigationSplitView {
             List {
@@ -39,36 +83,7 @@ struct ContentView: View {
             }
         }
         .toolbar {
-            ToolbarItemGroup(placement: .navigation) {
-                if selectedNote != nil {
-                    Button {
-                        selectedNote = nil
-                    } label: {
-                        Label("Back", systemImage: "chevron.left")
-                    }
-                }
-            }
-            
-            ToolbarItemGroup {
-                Button {
-                    addSampledNotes()
-                } label: {
-                    Image(systemName: "wand.and.sparkles.inverse")
-                }
-                
-                Button {
-                    modelContext.insert(Note(title: "A wonderful new card"))
-                } label: {
-                    Image(systemName: "plus.square")
-                }
-                
-                Button {
-                    deleteAllNotes()
-                } label: {
-                    Image(systemName: "trash")
-                }
-                .tint(.red)
-            }
+            toolbarContent
         }
     }
     
