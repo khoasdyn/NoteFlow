@@ -22,19 +22,22 @@ struct DetailView: View {
                     .textFieldStyle(.plain)
                     .lineLimit(1...10)
                     .multilineTextAlignment(.leading)
+                    .frame(maxWidth: 650)
                 
                 TextEditor(text: $note.content)
                     .font(.system(size: 18, weight: .regular))
                     .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .frame(maxHeight: .infinity, alignment: .topLeading)
                     .scrollContentBackground(.hidden)
+                    .frame(maxWidth: 650)
             }
             .padding(32)
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            
         }
-        .background(.white)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
         .padding(32)
-        .frame(maxWidth: 800, maxHeight: .infinity)
         .navigationTitle(note.title)
     }
 }
