@@ -29,6 +29,7 @@ struct DetailView: View {
                     .foregroundColor(.primary)
                     .frame(maxHeight: .infinity, alignment: .topLeading)
                     .scrollContentBackground(.hidden)
+                    .scrollIndicators(.never)  // Hides the scroll bar
                     .frame(maxWidth: 650)
             }
             .padding(32)
