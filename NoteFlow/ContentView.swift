@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @Query var notes: [Note]
+    @State private var searchText: String = ""
     @Environment(\.modelContext) private var modelContext
     @State var selectedNote: Note?
     
@@ -22,25 +23,44 @@ struct ContentView: View {
             if let note = selectedNote {
                 DetailView(note: note)
             } else {
-                ScrollView(.vertical) {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
-                        ForEach(notes, id: \.id) { note in
-                            CardView(note: note)
-                                .onTapGesture {
-                                    selectedNote = note
-                                }
+                SearchQueryView(searchText: searchText) { notes in
+                    ScrollView(.vertical) {
+                        SearchBar()
+                            .frame(maxWidth: 400)
+                        
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
+                            ForEach(notes, id: \.id) { note in
+                                CardView(note: note)
+                                    .onTapGesture {
+                                        selectedNote = note
+                                    }
+                            }
                         }
+                        .padding(16)
                     }
-                    .padding(16)
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white)
                 }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.white)
             }
         }
         .toolbar {
             toolbarContent
         }
+    }
+    
+    /// Custom Search Bar With Some Basic Components
+    @ViewBuilder
+    func SearchBar() -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+            
+            TextField("Search", text: $searchText)
+                .textFieldStyle(.plain)
+        }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 15)
+        .background(Color.primary.opacity(0.06), in: .rect(cornerRadius: 10))
     }
     
     func addSampledNotes() {

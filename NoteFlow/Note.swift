@@ -12,6 +12,7 @@ class Note {
     var id: String = UUID().uuidString
     var title: String
     var content: String
+    var dateCreated: Date = Date()
     
     init(title: String) {
         self.title = title
