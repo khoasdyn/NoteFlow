@@ -10,9 +10,10 @@ import SwiftData
 
 struct ContentView: View {
     @Query var notes: [Note]
-    @State private var searchText: String = ""
     @Environment(\.modelContext) private var modelContext
     @State var selectedNote: Note?
+    @State private var searchText: String = ""
+    @FocusState private var isSearchFieldFocused: Bool
     
     var body: some View {
         NavigationSplitView {
@@ -41,11 +42,23 @@ struct ContentView: View {
                     .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.white)
+                    .onTapGesture {
+                        // Dismiss search focus when tapping outside
+                        isSearchFieldFocused = false
+                    }
+                    .onKeyPress(.escape) {
+                        // Dismiss search focus when pressing Escape key
+                        isSearchFieldFocused = false
+                        if !searchText.isEmpty {
+                            searchText = ""
+                        }
+                        return .handled
+                    }
                 }
             }
         }
         .toolbar {
-            toolbarContent
+            toolbarContent(isSearching: isSearchFieldFocused || !searchText.isEmpty)
         }
     }
     
@@ -57,6 +70,19 @@ struct ContentView: View {
             
             TextField("Search", text: $searchText)
                 .textFieldStyle(.plain)
+                .focused($isSearchFieldFocused)
+            
+            // Clear button
+            if !searchText.isEmpty || isSearchFieldFocused {
+                Button(action: {
+                    searchText = ""
+                    isSearchFieldFocused = false
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .padding(.vertical, 10)
         .padding(.horizontal, 15)

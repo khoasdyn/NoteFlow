@@ -10,7 +10,7 @@ import SwiftData
 
 extension ContentView {
     @ToolbarContentBuilder
-    var toolbarContent: some ToolbarContent {
+    func toolbarContent(isSearching: Bool) -> some ToolbarContent {
         if selectedNote != nil {
             // DetailView toolbar items
             ToolbarItemGroup(placement: .navigation) {
@@ -28,8 +28,8 @@ extension ContentView {
                     Label("Share", systemImage: "square.and.arrow.up")
                 }
             }
-        } else {
-            // Grid view toolbar items
+        } else if !isSearching {
+            // Grid view toolbar items - only show when not searching
             ToolbarItemGroup {
                 Button {
                     addSampledNotes()

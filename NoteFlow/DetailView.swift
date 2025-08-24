@@ -39,7 +39,7 @@ struct DetailView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             
         }
-        .padding(32)
+        .padding(48)
         .navigationTitle(note.title)
     }
 }
