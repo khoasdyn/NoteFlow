@@ -11,51 +11,7 @@ import SwiftData
 struct ContentView: View {
     @Query var notes: [Note]
     @Environment(\.modelContext) private var modelContext
-    @State private var selectedNote: Note?
-        
-    @ToolbarContentBuilder
-    var toolbarContent: some ToolbarContent {
-        if selectedNote != nil {
-            // DetailView toolbar items
-            ToolbarItemGroup(placement: .navigation) {
-                Button {
-                    selectedNote = nil
-                } label: {
-                    Label("Back", systemImage: "chevron.left")
-                }
-            }
-            
-            ToolbarItemGroup(placement: .primaryAction) {
-                Button {
-                    // Share action
-                } label: {
-                    Label("Share", systemImage: "square.and.arrow.up")
-                }
-            }
-        } else {
-            // Grid view toolbar items
-            ToolbarItemGroup {
-                Button {
-                    addSampledNotes()
-                } label: {
-                    Image(systemName: "wand.and.sparkles.inverse")
-                }
-                
-                Button {
-                    modelContext.insert(Note(title: "A wonderful new card"))
-                } label: {
-                    Image(systemName: "plus.square")
-                }
-                
-                Button {
-                    deleteAllNotes()
-                } label: {
-                    Image(systemName: "trash")
-                }
-                .tint(.red)
-            }
-        }
-    }
+    @State var selectedNote: Note?
     
     var body: some View {
         NavigationSplitView {
@@ -111,6 +67,10 @@ struct ContentView: View {
         for title in titles {
             modelContext.insert(Note(title: title))
         }
+    }
+    
+    func addNewNote() {
+        modelContext.insert(Note(title: "A wonderful new card"))
     }
     
     func deleteAllNotes() {
