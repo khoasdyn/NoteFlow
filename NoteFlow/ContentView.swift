@@ -27,8 +27,7 @@ struct ContentView: View {
                 SearchQueryView(searchText: searchText) { notes in
                     ScrollView(.vertical) {
                         SearchBar()
-                            .frame(maxWidth: 400)
-                        
+                            
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
                             ForEach(notes, id: \.id) { note in
                                 CardView(note: note)
@@ -60,6 +59,11 @@ struct ContentView: View {
         .toolbar {
             toolbarContent(isSearching: isSearchFieldFocused || !searchText.isEmpty)
         }
+        .task {
+            // Small delay to prevent auto-focus on launch
+            try? await Task.sleep(for: .seconds(0.1))
+            isSearchFieldFocused = false
+        }
     }
     
     /// Custom Search Bar With Some Basic Components
@@ -84,6 +88,7 @@ struct ContentView: View {
                 .buttonStyle(.plain)
             }
         }
+        .frame(maxWidth: 400)
         .padding(.vertical, 10)
         .padding(.horizontal, 15)
         .background(Color.primary.opacity(0.06), in: .rect(cornerRadius: 10))
