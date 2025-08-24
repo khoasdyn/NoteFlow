@@ -22,7 +22,7 @@ struct DetailView: View {
                     .textFieldStyle(.plain)
                     .lineLimit(1...10)
                     .multilineTextAlignment(.leading)
-                    .frame(maxWidth: 650)
+//                    .frame(maxWidth: 650)
                     .padding(.leading, 5)
                 
                 TextEditor(text: $note.content)
@@ -31,10 +31,10 @@ struct DetailView: View {
                     .frame(maxHeight: .infinity, alignment: .topLeading)
                     .scrollContentBackground(.hidden)
                     .scrollIndicators(.never)  // Hides the scroll bar
-                    .frame(maxWidth: 650)
+//                    .frame(maxWidth: 650)
             }
             .padding(32)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: 800)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             
