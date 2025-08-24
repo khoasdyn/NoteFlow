@@ -42,9 +42,11 @@ struct DetailView: View {
         .padding(48)
         .navigationTitle(note.title)
         .task {
-            // Auto-focus TextEditor when view appears
-            try? await Task.sleep(for: .seconds(0))
-            isTextEditorFocused = true
+            // Auto-focus TextEditor only when content is empty
+            if note.content.isEmpty {
+                try? await Task.sleep(for: .seconds(0.1))
+                isTextEditorFocused = true
+            }
         }
     }
 }
