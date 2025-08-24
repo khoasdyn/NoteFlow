@@ -23,6 +23,7 @@ struct DetailView: View {
                     .lineLimit(1...10)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: 650)
+                    .padding(.leading, 5)
                 
                 TextEditor(text: $note.content)
                     .font(.system(size: 18, weight: .regular))
