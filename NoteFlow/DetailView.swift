@@ -11,6 +11,7 @@ import SwiftData
 struct DetailView: View {
     @Bindable var note: Note
     @Environment(\.modelContext) private var modelContext
+    @FocusState private var isTextEditorFocused: Bool
     
     var body: some View {
         VStack {
@@ -22,7 +23,6 @@ struct DetailView: View {
                     .textFieldStyle(.plain)
                     .lineLimit(1...10)
                     .multilineTextAlignment(.leading)
-//                    .frame(maxWidth: 650)
                     .padding(.leading, 5)
                 
                 TextEditor(text: $note.content)
@@ -30,8 +30,8 @@ struct DetailView: View {
                     .foregroundColor(.primary)
                     .frame(maxHeight: .infinity, alignment: .topLeading)
                     .scrollContentBackground(.hidden)
-                    .scrollIndicators(.never)  // Hides the scroll bar
-//                    .frame(maxWidth: 650)
+                    .scrollIndicators(.never)
+                    .focused($isTextEditorFocused)
             }
             .padding(32)
             .frame(maxWidth: 800)
@@ -41,5 +41,10 @@ struct DetailView: View {
         }
         .padding(48)
         .navigationTitle(note.title)
+        .task {
+            // Auto-focus TextEditor when view appears
+            try? await Task.sleep(for: .seconds(0))
+            isTextEditorFocused = true
+        }
     }
 }
