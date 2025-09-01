@@ -10,7 +10,7 @@ import SwiftData
 
 extension ContentView {
     @ToolbarContentBuilder
-    func toolbarContent(isSearching: Bool) -> some ToolbarContent {
+    func toolbarContent(isSearching: Bool, selectedMenuItem: MenuItem) -> some ToolbarContent {
         if selectedNote != nil {
             // DetailView toolbar items
             ToolbarItemGroup(placement: .navigation) {
@@ -31,24 +31,33 @@ extension ContentView {
         } else if !isSearching {
             // Grid view toolbar items - only show when not searching
             ToolbarItemGroup {
-                Button {
-                    addSampledNotes()
-                } label: {
-                    Image(systemName: "wand.and.sparkles.inverse")
+                if selectedMenuItem == .cardLibrary {
+                    Button {
+                        addSampledNotes()
+                    } label: {
+                        Image(systemName: "wand.and.sparkles.inverse")
+                    }
+                    
+                    Button {
+                        addNewNote()
+                    } label: {
+                        Image(systemName: "plus.square")
+                    }
+                    
+                    Button {
+                        deleteAllNotes()
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .tint(.red)
+                } else if selectedMenuItem == .trash {
+                    Button {
+                        recoverAllNotes()
+                    } label: {
+                        Image(systemName: "arrow.up.trash")
+                    }
+                    .tint(.green)
                 }
-                
-                Button {
-                    addNewNote()
-                } label: {
-                    Image(systemName: "plus.square")
-                }
-                
-                Button {
-                    deleteAllNotes()
-                } label: {
-                    Image(systemName: "trash")
-                }
-                .tint(.red)
             }
         }
     }

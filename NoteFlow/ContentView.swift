@@ -114,7 +114,7 @@ struct ContentView: View {
             }
         }
         .toolbar {
-            toolbarContent(isSearching: isSearchFieldFocused || !searchText.isEmpty)
+            toolbarContent(isSearching: isSearchFieldFocused || !searchText.isEmpty, selectedMenuItem: selectedMenuItem)
         }
         .task {
             // Small delay to prevent auto-focus on launch
@@ -185,6 +185,15 @@ struct ContentView: View {
         for note in notes {
             if !note.isInTrash {
                 note.isInTrash = true
+            }
+        }
+        try? modelContext.save()
+    }
+    
+    func recoverAllNotes() {
+        for note in notes {
+            if note.isInTrash {
+                note.isInTrash = false
             }
         }
         try? modelContext.save()
