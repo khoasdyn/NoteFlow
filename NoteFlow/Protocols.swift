@@ -18,7 +18,7 @@ protocol DisplayableItem {
 protocol ActionalableItem: AnyObject {
     var isInTrash: Bool { get set }
     func moveToTrash()
-    func recoverFromTrash()
+    func restoreFromTrash()
 }
 
 extension ActionalableItem {
@@ -26,7 +26,7 @@ extension ActionalableItem {
         isInTrash = true
     }
     
-    func recoverFromTrash() {
+    func restoreFromTrash() {
         isInTrash = false
     }
 }

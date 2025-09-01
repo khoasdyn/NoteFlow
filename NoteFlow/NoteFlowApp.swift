@@ -12,7 +12,7 @@ import SwiftData
 struct NoteFlowApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CardLibraryView()
                 .modelContainer(for: Note.self)
                 .preferredColorScheme(.light)
         }

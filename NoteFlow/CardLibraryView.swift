@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CardLibraryView.swift
 //  NoteFlow
 //
 //  Created by khoasdyn on 22/8/25.
@@ -13,7 +13,7 @@ enum MenuItem {
     case trash
 }
 
-struct ContentView: View {
+struct CardLibraryView: View {
     @Query var notes: [Note]
     @Environment(\.modelContext) private var modelContext
     @State var selectedNote: Note?
@@ -68,7 +68,17 @@ struct ContentView: View {
             }
         } detail: {
             if let note = selectedNote {
-                DetailView(note: note, selectedMenuItem: selectedMenuItem)
+                DetailView(note: note, selectedMenuItem: selectedMenuItem) {
+                    withAnimation {
+                        selectedNote?.restoreFromTrash()
+                    }
+                    selectedNote = nil
+                } onDeletePermanently: {
+                    withAnimation {
+                        permanentlDelete()
+                    }
+                    selectedNote = nil
+                }
             } else {
                 SearchQueryView(searchText: searchText) { notes in
                     let filteredNotes = notes.filter { selectedMenuItem == .cardLibrary ? !$0.isInTrash : $0.isInTrash }
@@ -182,6 +192,12 @@ struct ContentView: View {
         try? modelContext.save()
     }
     
+    func permanentlDelete() {
+        if let selectedNote {
+            modelContext.delete(selectedNote)
+        }
+    }
+    
     func permanentlyDeleteAllNotes() {
         for note in notes {
             if note.isInTrash {
@@ -193,5 +209,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    CardLibraryView()
 }

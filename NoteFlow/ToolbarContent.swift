@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-extension ContentView {
+extension CardLibraryView {
     @ToolbarContentBuilder
     func toolbarContent(isSearching: Bool, selectedMenuItem: MenuItem) -> some ToolbarContent {
         if selectedNote != nil {
@@ -22,15 +22,18 @@ extension ContentView {
             }
             
             ToolbarItemGroup(placement: .primaryAction) {
-                Button {
-                    withAnimation {
-                        selectedNote?.moveToTrash()
+                if selectedMenuItem != .trash {
+                    Button {
+                        withAnimation {
+                            selectedNote?.moveToTrash()
+                        }
                         selectedNote = nil
-                    }
 
-                } label: {
-                    Label("Move To Trash", systemImage: "trash")
+                    } label: {
+                        Label("Move To Trash", systemImage: "trash")
+                    }
                 }
+
             }
         } else if !isSearching {
             // Grid view toolbar items - only show when not searching

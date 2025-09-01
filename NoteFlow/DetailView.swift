@@ -13,6 +13,8 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @FocusState private var isTextEditorFocused: Bool
     let selectedMenuItem: MenuItem
+    var onRestore: () -> Void
+    var onDeletePermanently: () -> Void
     
     var body: some View {
         VStack {
@@ -22,16 +24,17 @@ struct DetailView: View {
                     Text("This card is in Trash.")
                     
                     Button("Restore") {
-                        // 'Delete permanently'
+                        onRestore()
                     }
                     
                     Button("Delete Permanently") {
-                        // 'Delete permanently'
+                        onDeletePermanently()
                     }
                 }
-                .padding(horizontal: 16, vertical: 8)
+                .padding(horizontal: 16, vertical: 12)
+                .frame(maxWidth: 800)
                 .foregroundStyle(.white)
-                .background(.error500, in: RoundedRectangle(cornerRadius: .infinity))
+                .background(.error500, in: RoundedRectangle(cornerRadius: 16))
             }
             
             // Main Container
