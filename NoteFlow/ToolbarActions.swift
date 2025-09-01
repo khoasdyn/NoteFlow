@@ -33,10 +33,13 @@ extension CardLibraryView {
         for title in titles {
             modelContext.insert(Note(title: title))
         }
+        
+        try? modelContext.save()
     }
     
     func addNewNote() {
         modelContext.insert(Note(title: "A wonderful new card"))
+        try? modelContext.save()
     }
     
     func recoverAllNotes() {

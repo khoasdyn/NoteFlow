@@ -41,9 +41,7 @@ extension CardLibraryView {
                 if selectedMenuItem == .cardLibrary {
                     
                     Button {
-                        withAnimation {
-                            addNewNote()
-                        }
+                        addNewNote()
                     } label: {
                         Image(systemName: "plus.square")
                     }
@@ -60,7 +58,9 @@ extension CardLibraryView {
                         Divider()
                         
                         Button {
-                            moveAllToTrash()
+                            withAnimation {
+                                moveAllToTrash()
+                            }
                         } label: {
                             Label("Delete All", systemImage: "trash")
                         }
@@ -72,7 +72,9 @@ extension CardLibraryView {
                     let trashCount = notes.filter { $0.isInTrash }.count
                     Menu {
                         Button {
-                            recoverAllNotes()
+                            withAnimation {
+                                recoverAllNotes()
+                            }
                         } label: {
                             Label("Recover All Notes", systemImage: "arrow.up.trash")
                         }

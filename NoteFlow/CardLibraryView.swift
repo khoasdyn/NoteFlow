@@ -48,13 +48,14 @@ struct CardLibraryView: View {
                         SearchBar()
                         
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
-                            ForEach(filteredNotes, id: \.id) { note in
+                            ForEach(filteredNotes) { note in
                                 CardView(note: note)
                                     .onTapGesture {
                                         selectedNote = note
                                     }
                             }
                         }
+                        .animation(.snappy(duration: 0.25, extraBounce: 0), value: filteredNotes)
                         .padding(16)
                     }
                     .padding()

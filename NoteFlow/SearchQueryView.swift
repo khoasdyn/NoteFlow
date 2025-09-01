@@ -18,7 +18,7 @@ struct SearchQueryView<Content: View>: View {
             return isSearchTextEmpty || $0.title.localizedStandardContains(searchText)
         }
         
-        _notes = .init(filter: predicate, sort: [.init(\.dateCreated, order: .reverse)], animation: .snappy(duration: 0.25, extraBounce: 0))
+        _notes = .init(filter: predicate, sort: [.init(\.dateCreated, order: .reverse)])
     }
     var content: ([Note]) -> Content
     @Query var notes: [Note]
