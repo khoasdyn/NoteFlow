@@ -19,6 +19,7 @@ struct CardLibraryView: View {
     @State var selectedNote: Note?
     @State var searchText: String = ""
     @State var selectedMenuItem: MenuItem = .cardLibrary
+    @State var showDeleteConfirmation = false
     @FocusState var isSearchFieldFocused: Bool
     
     var body: some View {
@@ -71,7 +72,15 @@ struct CardLibraryView: View {
             }
         }
         .toolbar {
-            toolbarContent(isSearching: isSearchFieldFocused || !searchText.isEmpty, selectedMenuItem: selectedMenuItem)
+            toolbarContent(isSearching: isSearchFieldFocused || !searchText.isEmpty, selectedMenuItem: selectedMenuItem, notes: notes)
+        }
+        .confirmationDialog("Delete All Permanently", isPresented: $showDeleteConfirmation) {
+            Button("Delete All", role: .destructive) {
+                permanentlyDeleteAllNotes()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This action cannot be undone. All notes in trash will be permanently deleted.")
         }
         .task {
             // Small delay to prevent auto-focus on launch

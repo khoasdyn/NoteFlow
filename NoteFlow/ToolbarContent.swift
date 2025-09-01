@@ -10,7 +10,7 @@ import SwiftData
 
 extension CardLibraryView {
     @ToolbarContentBuilder
-    func toolbarContent(isSearching: Bool, selectedMenuItem: MenuItem) -> some ToolbarContent {
+    func toolbarContent(isSearching: Bool, selectedMenuItem: MenuItem, notes: [Note]) -> some ToolbarContent {
         if selectedNote != nil {
             // DetailView toolbar items
             ToolbarItemGroup(placement: .navigation) {
@@ -51,16 +51,25 @@ extension CardLibraryView {
                         Image(systemName: "plus.square")
                     }
                 } else if selectedMenuItem == .trash {
-                    Button {
-                        recoverAllNotes()
+                    let trashCount = notes.filter { $0.isInTrash }.count
+                    Menu {
+                        Button {
+                            recoverAllNotes()
+                        } label: {
+                            Label("Recover All Notes", systemImage: "arrow.up.trash")
+                        }
+                        .disabled(trashCount == 0)
+                        
+                        Divider()
+                        
+                        Button {
+                            showDeleteConfirmation = true
+                        } label: {
+                            Label("Delete All Permanently...", systemImage: "trash")
+                        }
+                        .disabled(trashCount == 0)
                     } label: {
-                        Image(systemName: "arrow.up.trash")
-                    }
-                    
-                    Button {
-                        permanentlyDeleteAllNotes()
-                    } label: {
-                        Image(systemName: "trash")
+                        Image(systemName: "ellipsis.circle")
                     }
                 }
             }
