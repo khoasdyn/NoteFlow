@@ -65,20 +65,10 @@ struct ContentView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                .listStyle(.sidebar)
-                
-                Divider()
-                
-                List {
-                    Label("Trash", systemImage: "trash")
-                        .foregroundStyle(.red)
-                }
-                .frame(height: 44)
-                .listStyle(.sidebar)
             }
         } detail: {
             if let note = selectedNote {
-                DetailView(note: note)
+                DetailView(note: note, selectedMenuItem: selectedMenuItem)
             } else {
                 SearchQueryView(searchText: searchText) { notes in
                     let filteredNotes = notes.filter { selectedMenuItem == .cardLibrary ? !$0.isInTrash : $0.isInTrash }

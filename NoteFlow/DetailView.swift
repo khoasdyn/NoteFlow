@@ -12,6 +12,7 @@ struct DetailView: View {
     @Bindable var note: Note
     @Environment(\.modelContext) private var modelContext
     @FocusState private var isTextEditorFocused: Bool
+    let selectedMenuItem: MenuItem
     
     var body: some View {
         VStack {
@@ -24,6 +25,7 @@ struct DetailView: View {
                     .lineLimit(1...10)
                     .multilineTextAlignment(.leading)
                     .padding(.leading, 5)
+                    .allowsHitTesting(selectedMenuItem != .trash)
                 
                 TextEditor(text: $note.content)
                     .font(.system(size: 18, weight: .regular))
@@ -32,6 +34,7 @@ struct DetailView: View {
                     .scrollContentBackground(.hidden)
                     .scrollIndicators(.never)
                     .focused($isTextEditorFocused)
+                    .disabled(selectedMenuItem == .trash)
             }
             .padding(32)
             .frame(maxWidth: 800)
@@ -42,8 +45,8 @@ struct DetailView: View {
         .padding(48)
         .navigationTitle(note.title)
         .task {
-            // Auto-focus TextEditor only when content is empty
-            if note.content.isEmpty {
+            // Auto-focus TextEditor only when content is empty and not in trash
+            if note.content.isEmpty && selectedMenuItem != .trash {
                 try? await Task.sleep(for: .seconds(0.1))
                 isTextEditorFocused = true
             }
