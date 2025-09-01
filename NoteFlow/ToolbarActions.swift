@@ -48,6 +48,15 @@ extension CardLibraryView {
         try? modelContext.save()
     }
     
+    func moveAllToTrash() {
+        for note in notes {
+            if !note.isInTrash {
+                note.isInTrash = true
+            }
+        }
+        try? modelContext.save()
+    }
+    
     func permanentlDelete() {
         if let selectedNote {
             modelContext.delete(selectedNote)

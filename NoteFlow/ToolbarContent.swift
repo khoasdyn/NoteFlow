@@ -39,17 +39,31 @@ extension CardLibraryView {
             // Grid view toolbar items - only show when not searching
             ToolbarItemGroup {
                 if selectedMenuItem == .cardLibrary {
-                    Button {
-                        addSampledNotes()
-                    } label: {
-                        Image(systemName: "wand.and.sparkles.inverse")
-                    }
                     
                     Button {
                         addNewNote()
                     } label: {
                         Image(systemName: "plus.square")
                     }
+                    
+                    Menu {
+                        Button {
+                            addSampledNotes()
+                        } label: {
+                            Label("Add Sample Notes", systemImage: "wand.and.sparkles.inverse")
+                        }
+                        
+                        Divider()
+                        
+                        Button {
+                            moveAllToTrash()
+                        } label: {
+                            Label("Delete All", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    
                 } else if selectedMenuItem == .trash {
                     let trashCount = notes.filter { $0.isInTrash }.count
                     Menu {
