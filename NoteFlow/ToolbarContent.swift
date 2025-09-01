@@ -23,9 +23,10 @@ extension ContentView {
             
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
-                    // Share action
+                    moveToTrash()
+                    selectedNote = nil
                 } label: {
-                    Label("Share", systemImage: "square.and.arrow.up")
+                    Label("Delete Note", systemImage: "trash")
                 }
             }
         } else if !isSearching {
