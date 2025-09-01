@@ -24,11 +24,9 @@ struct CardLibraryView: View {
     
     var body: some View {
         NavigationSplitView {
-            VStack(spacing: 0) {
-                List {
-                    CardLibraryMenuItem()
-                    TrashMenuItem()
-                }
+            List {
+                CardLibraryMenuItem()
+                TrashMenuItem()
             }
         } detail: {
             if let note = selectedNote {

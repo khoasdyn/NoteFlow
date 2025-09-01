@@ -41,14 +41,18 @@ extension CardLibraryView {
                 if selectedMenuItem == .cardLibrary {
                     
                     Button {
-                        addNewNote()
+                        withAnimation {
+                            addNewNote()
+                        }
                     } label: {
                         Image(systemName: "plus.square")
                     }
                     
                     Menu {
                         Button {
-                            addSampledNotes()
+                            withAnimation {
+                                addSampledNotes()
+                            }
                         } label: {
                             Label("Add Sample Notes", systemImage: "wand.and.sparkles.inverse")
                         }
