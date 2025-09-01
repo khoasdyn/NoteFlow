@@ -13,6 +13,7 @@ class Note {
     var title: String
     var content: String
     var dateCreated: Date = Date()
+    var isInTrash: Bool = false
     
     init(title: String) {
         self.title = title

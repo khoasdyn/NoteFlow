@@ -8,28 +8,85 @@
 import SwiftUI
 import SwiftData
 
+enum MenuItem {
+    case cardLibrary
+    case trash
+}
+
 struct ContentView: View {
     @Query var notes: [Note]
     @Environment(\.modelContext) private var modelContext
     @State var selectedNote: Note?
     @State private var searchText: String = ""
+    @State private var selectedMenuItem: MenuItem = .cardLibrary
     @FocusState private var isSearchFieldFocused: Bool
     
     var body: some View {
         NavigationSplitView {
-            List {
-                Label("All Cards", systemImage: "square.stack")
+            VStack(spacing: 0) {
+                List {
+                    Button(action: { selectedMenuItem = .cardLibrary }) {
+                        HStack {
+                            Label("Card Library", systemImage: "square.stack")
+                                .foregroundStyle(selectedMenuItem == .cardLibrary ? .white : Color.greenLight700)
+                            Spacer()
+                            Text("\(notes.filter { !$0.isInTrash }.count)")
+                                .font(.caption)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.greenLight700, in: Capsule())
+                                .contentTransition(.numericText())
+                                .animation(.snappy, value: notes.count)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(selectedMenuItem == .cardLibrary ? Color.greenLight500 : Color.greenLight50, in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
+                    
+                    Button(action: { selectedMenuItem = .trash }) {
+                        HStack {
+                            Label("Trash", systemImage: "trash")
+                                .foregroundStyle(selectedMenuItem == .trash ? .white : Color.error700)
+                            Spacer()
+                            Text("\(notes.filter { $0.isInTrash }.count)")
+                                .font(.caption)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.error700, in: Capsule())
+                                .contentTransition(.numericText())
+                                .animation(.snappy, value: notes.count)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(selectedMenuItem == .trash ? Color.error500 : Color.error50, in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .listStyle(.sidebar)
+                
+                Divider()
+                
+                List {
+                    Label("Trash", systemImage: "trash")
+                        .foregroundStyle(.red)
+                }
+                .frame(height: 44)
+                .listStyle(.sidebar)
             }
         } detail: {
             if let note = selectedNote {
                 DetailView(note: note)
             } else {
                 SearchQueryView(searchText: searchText) { notes in
+                    let filteredNotes = notes.filter { selectedMenuItem == .cardLibrary ? !$0.isInTrash : $0.isInTrash }
                     ScrollView(.vertical) {
                         SearchBar()
-                            
+                        
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
-                            ForEach(notes, id: \.id) { note in
+                            ForEach(filteredNotes, id: \.id) { note in
                                 CardView(note: note)
                                     .onTapGesture {
                                         selectedNote = note
@@ -126,7 +183,9 @@ struct ContentView: View {
     
     func deleteAllNotes() {
         for note in notes {
-            modelContext.delete(note)
+            if !note.isInTrash {
+                note.isInTrash = true
+            }
         }
         try? modelContext.save()
     }
