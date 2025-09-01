@@ -16,6 +16,24 @@ struct DetailView: View {
     
     var body: some View {
         VStack {
+            
+            if selectedMenuItem == .trash {
+                HStack {
+                    Text("This card is in Trash.")
+                    
+                    Button("Restore") {
+                        // 'Delete permanently'
+                    }
+                    
+                    Button("Delete Permanently") {
+                        // 'Delete permanently'
+                    }
+                }
+                .padding(horizontal: 16, vertical: 8)
+                .foregroundStyle(.white)
+                .background(.error500, in: RoundedRectangle(cornerRadius: .infinity))
+            }
+            
             // Main Container
             VStack(alignment: .leading, spacing: 16) {
                 TextField("Title", text: $note.title, axis: .vertical)
