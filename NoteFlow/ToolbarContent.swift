@@ -23,10 +23,13 @@ extension ContentView {
             
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
-                    moveToTrash()
-                    selectedNote = nil
+                    withAnimation {
+                        selectedNote?.moveToTrash()
+                        selectedNote = nil
+                    }
+
                 } label: {
-                    Label("Delete Note", systemImage: "trash")
+                    Label("Move To Trash", systemImage: "trash")
                 }
             }
         } else if !isSearching {
@@ -44,27 +47,18 @@ extension ContentView {
                     } label: {
                         Image(systemName: "plus.square")
                     }
-                    
-                    Button {
-                        moveToTrash()
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                    .tint(.red)
                 } else if selectedMenuItem == .trash {
                     Button {
                         recoverAllNotes()
                     } label: {
                         Image(systemName: "arrow.up.trash")
                     }
-                    .tint(.green)
                     
                     Button {
                         permanentlyDeleteAllNotes()
                     } label: {
                         Image(systemName: "trash")
                     }
-                    .tint(.red)
                 }
             }
         }

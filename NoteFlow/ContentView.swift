@@ -88,6 +88,8 @@ struct ContentView: View {
                     .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.white)
+                    .scrollContentBackground(.hidden)
+                    .scrollIndicators(.never)
                     .onTapGesture {
                         // Dismiss search focus when tapping outside
                         isSearchFieldFocused = false
@@ -169,15 +171,6 @@ struct ContentView: View {
     
     func addNewNote() {
         modelContext.insert(Note(title: "A wonderful new card"))
-    }
-    
-    func moveToTrash() {
-        for note in notes {
-            if !note.isInTrash {
-                note.isInTrash = true
-            }
-        }
-        try? modelContext.save()
     }
     
     func recoverAllNotes() {
