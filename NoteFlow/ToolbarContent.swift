@@ -45,7 +45,7 @@ extension ContentView {
                     }
                     
                     Button {
-                        deleteAllNotes()
+                        moveToTrash()
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -57,6 +57,13 @@ extension ContentView {
                         Image(systemName: "arrow.up.trash")
                     }
                     .tint(.green)
+                    
+                    Button {
+                        permanentlyDeleteAllNotes()
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .tint(.red)
                 }
             }
         }

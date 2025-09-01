@@ -181,7 +181,7 @@ struct ContentView: View {
         modelContext.insert(Note(title: "A wonderful new card"))
     }
     
-    func deleteAllNotes() {
+    func moveToTrash() {
         for note in notes {
             if !note.isInTrash {
                 note.isInTrash = true
@@ -194,6 +194,15 @@ struct ContentView: View {
         for note in notes {
             if note.isInTrash {
                 note.isInTrash = false
+            }
+        }
+        try? modelContext.save()
+    }
+    
+    func permanentlyDeleteAllNotes() {
+        for note in notes {
+            if note.isInTrash {
+                modelContext.delete(note)
             }
         }
         try? modelContext.save()
