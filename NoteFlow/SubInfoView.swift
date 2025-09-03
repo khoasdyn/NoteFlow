@@ -19,8 +19,14 @@ extension DetailView {
     }
     
     @ViewBuilder
-    func WordCountView() -> some View {
+    func SubInfoView() -> some View {
         HStack {
+            Text("\(note.dateCreated.formatted(date: .abbreviated, time: .omitted))")
+                .padding(horizontal: 8, vertical: 4)
+                .background(.grayWarm100, in: RoundedRectangle(cornerRadius: .infinity))
+                .foregroundStyle(.grayWarm600)
+                .font(.callout)
+            
             Text("\(wordCount) \(wordCount == 1 ? "word" : "words")")
                 .padding(horizontal: 8, vertical: 4)
                 .background(.grayWarm100, in: RoundedRectangle(cornerRadius: .infinity))

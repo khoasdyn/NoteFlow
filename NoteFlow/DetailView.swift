@@ -44,7 +44,7 @@ struct DetailView: View {
                     .frame(maxWidth: 800)
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
-                WordCountView()
+                SubInfoView()
                     .frame(maxWidth: 800, alignment: .trailing)
             }
             

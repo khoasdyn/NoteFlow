@@ -21,6 +21,9 @@ struct CardView: View {
                 .foregroundColor(.grayWarm700)
                 .lineLimit(5)
             Spacer()
+            Text(note.dateCreated.formatted(date: .abbreviated, time: .omitted))
+                .font(.system(size: 12))
+                .foregroundColor(.grayWarm500)
         }
         .padding(18)
         .frame(minHeight: 200)
