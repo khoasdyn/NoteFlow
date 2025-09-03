@@ -55,8 +55,8 @@ struct CardLibraryView: View {
                                     }
                             }
                         }
-                        .animation(.snappy(duration: 0.25, extraBounce: 0), value: filteredNotes)
                         .padding(16)
+                        .animation(.snappy(duration: 0.25, extraBounce: 0), value: filteredNotes) // Needed for adding card animations
                     }
                     .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

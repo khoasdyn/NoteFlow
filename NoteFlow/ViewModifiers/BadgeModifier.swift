@@ -12,10 +12,6 @@ struct BadgeModifier: ViewModifier {
         content
             .padding(horizontal: 8, vertical: 4)
             .background(.grayWarm100, in: RoundedRectangle(cornerRadius: .infinity))
-            .overlay(
-                RoundedRectangle(cornerRadius: .infinity)
-                    .stroke(.grayWarm200, lineWidth: 1.5)
-            )
             .foregroundStyle(.grayWarm600)
             .font(.callout)
     }
