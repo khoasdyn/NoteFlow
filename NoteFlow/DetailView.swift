@@ -38,29 +38,16 @@ struct DetailView: View {
             }
             
             // Main Container
-            VStack(alignment: .leading, spacing: 16) {
-                TextField("Title", text: $note.title, axis: .vertical)
-                    .font(.system(size: 28, weight: .medium))
-                    .foregroundColor(.primary)
-                    .textFieldStyle(.plain)
-                    .lineLimit(1...10)
-                    .multilineTextAlignment(.leading)
-                    .padding(.leading, 5)
-                    .allowsHitTesting(selectedMenuItem != .trash)
-                
-                TextEditor(text: $note.content)
-                    .font(.system(size: 18, weight: .regular))
-                    .foregroundColor(.primary)
-                    .frame(maxHeight: .infinity, alignment: .topLeading)
-                    .scrollContentBackground(.hidden)
-                    .scrollIndicators(.never)
-                    .focused($isTextEditorFocused)
-                    .disabled(selectedMenuItem == .trash)
+            VStack {
+                MainEditorView()
+                    .padding(32)
+                    .frame(maxWidth: 800)
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                WordCountView()
+                    .frame(maxWidth: 800, alignment: .trailing)
             }
-            .padding(32)
-            .frame(maxWidth: 800)
-            .background(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            
             
         }
         .padding(48)
@@ -73,4 +60,31 @@ struct DetailView: View {
             }
         }
     }
+}
+
+// MARK: - Components
+extension DetailView {
+    @ViewBuilder
+    func MainEditorView() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            TextField("Title", text: $note.title, axis: .vertical)
+                .font(.system(size: 28, weight: .medium))
+                .foregroundColor(.primary)
+                .textFieldStyle(.plain)
+                .lineLimit(1...10)
+                .multilineTextAlignment(.leading)
+                .padding(.leading, 5)
+                .allowsHitTesting(selectedMenuItem != .trash)
+            
+            TextEditor(text: $note.content)
+                .font(.system(size: 18, weight: .regular))
+                .foregroundColor(.primary)
+                .frame(maxHeight: .infinity, alignment: .topLeading)
+                .scrollContentBackground(.hidden)
+                .scrollIndicators(.never)
+                .focused($isTextEditorFocused)
+                .disabled(selectedMenuItem == .trash)
+        }
+    }
+    
 }
