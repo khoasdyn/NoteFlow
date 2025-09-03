@@ -22,22 +22,13 @@ extension DetailView {
     func SubInfoView() -> some View {
         HStack {
             Text("\(note.dateCreated.formatted(date: .abbreviated, time: .omitted))")
-                .padding(horizontal: 8, vertical: 4)
-                .background(.grayWarm100, in: RoundedRectangle(cornerRadius: .infinity))
-                .foregroundStyle(.grayWarm600)
-                .font(.callout)
+                .badgeStyle()
             
             Text("\(wordCount) \(wordCount == 1 ? "word" : "words")")
-                .padding(horizontal: 8, vertical: 4)
-                .background(.grayWarm100, in: RoundedRectangle(cornerRadius: .infinity))
-                .foregroundStyle(.grayWarm600)
-                .font(.callout)
+                .badgeStyle()
             
             Text("\(characterCount.formatted()) \(characterCount == 1 ? "character" : "characters")")
-                .padding(horizontal: 8, vertical: 4)
-                .background(.grayWarm100, in: RoundedRectangle(cornerRadius: .infinity))
-                .foregroundStyle(.grayWarm600)
-                .font(.callout)
+                .badgeStyle()
         }
     }
 }
