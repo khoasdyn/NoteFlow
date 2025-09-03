@@ -55,7 +55,6 @@ struct CardLibraryView: View {
                                     }
                             }
                         }
-                        .animation(.snappy(duration: 0.25, extraBounce: 0), value: filteredNotes)
                         .padding(16)
                     }
                     .padding()
